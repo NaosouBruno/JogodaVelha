@@ -4,8 +4,10 @@ var jogadorSelecionado = document.querySelector("#jogador-selecionado");
 var vencedorSelecionado = document.querySelector("#vencedor-selecionado");
 var quadrados = document.querySelector(".quadrado");
 mudarJogador("X");
+var velha = false;
+
 function escolherQuadrado(id) {
-  if (vencedor !== null) {
+  if (vencedor !== null && velha === false) {
     return;
   }
   var quadrado = document.getElementById(id);
@@ -22,6 +24,7 @@ function escolherQuadrado(id) {
   }
   mudarJogador(jogador);
   checarVencedor();
+  /* deuVelha(); */
 }
 
 function mudarJogador(valor) {
@@ -39,7 +42,17 @@ function checarVencedor() {
   var quadrado7 = document.getElementById("7");
   var quadrado8 = document.getElementById("8");
   var quadrado9 = document.getElementById("9");
-
+  deuVelha(
+    quadrado1,
+    quadrado2,
+    quadrado3,
+    quadrado4,
+    quadrado5,
+    quadrado6,
+    quadrado7,
+    quadrado8,
+    quadrado9
+  );
   if (checarSequencia(quadrado1, quadrado2, quadrado3)) {
     mudarCor(quadrado1, quadrado2, quadrado3);
     mudarVencedor(quadrado1);
@@ -76,9 +89,12 @@ function checarVencedor() {
     return;
   }
   if (checarSequencia(quadrado3, quadrado5, quadrado7)) {
-    mudarCor(uadrado3, quadrado5, quadrado7);
+    mudarCor(quadrado3, quadrado5, quadrado7);
     mudarVencedor(quadrado3);
     return;
+  }
+  if (velha == true) {
+    pintarVelha();
   }
 }
 function mudarVencedor(quadrado) {
@@ -101,10 +117,29 @@ function checarSequencia(q1, q2, q3) {
   }
   return igual;
 }
+function deuVelha(q1, q2, q3, q4, q5, q6, q7, q8, q9) {
+  console.log(velha);
+  if (
+    q1.innerHTML !== "-" &&
+    q2.innerHTML !== "-" &&
+    q3.innerHTML !== "-" &&
+    q4.innerHTML !== "-" &&
+    q5.innerHTML !== "-" &&
+    q6.innerHTML !== "-" &&
+    q7.innerHTML !== "-" &&
+    q8.innerHTML !== "-" &&
+    q9.innerHTML !== "-"
+  ) {
+    velha = true;
+  } else {
+    return;
+  }
+}
 
 function reinciar() {
   vencedor = null;
   vencedorSelecionado.innerHTML = "";
+  velha = false;
   for (var i = 1; i <= 9; i++) {
     var quadrado = document.getElementById(i);
     quadrado.style.background = "#eee";
@@ -112,4 +147,10 @@ function reinciar() {
     quadrado.innerHTML = "-";
   }
   mudarJogador("X");
+}
+function pintarVelha() {
+  for (var i = 1; i <= 9; i++) {
+    var quadrado = document.getElementById(i);
+    quadrado.style.background = "red";
+  }
 }
